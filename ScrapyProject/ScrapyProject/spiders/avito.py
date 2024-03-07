@@ -12,8 +12,13 @@ class AvitoSpider(scrapy.Spider):
     allowed_domains = ["avito.ma"]
 
     def start_requests(self):
-        url = "https://www.avito.ma/fr/maroc/appartements-%C3%A0_louer"
-        yield scrapy.Request(url, callback=self.parse)
+        urls = [
+            "https://www.avito.ma/fr/maroc/appartements-%C3%A0_louer",
+            "https://www.avito.ma/fr/maroc/maisons-%C3%A0_louer",
+            "https://www.avito.ma/fr/maroc/villas_riad-%C3%A0_louer"
+        ]
+        for url in urls:
+            yield scrapy.Request(url, callback=self.parse)
 
     def parse(self, response):
         for selector in response.xpath('//*[@id="__next"]/div/main/div/div[5]/div[1]/div/div[1]/a'):
@@ -22,6 +27,9 @@ class AvitoSpider(scrapy.Spider):
 
             if offer_url:
                 yield scrapy.Request(offer_url, callback=self.parse_offer, meta={'ville': ville})
+            next_page_link = selector.xpath('//*[@id="__next"]/div/main/div/div[5]/div[1]/div/div[2]/div/a[5]/@href').extract_first()
+            if next_page_link:
+                yield response.follow(next_page_link, callback=self.parse)
 
     def parse_offer(self, response):
         name = response.xpath('//*[@id="__next"]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div['
