@@ -4,10 +4,15 @@
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
-
+USER_AGENT_CHOICES = [
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 '
+    'Safari/537.36',
+]
 
 class ScrapyprojectSpiderMiddleware:
     # Not all methods need to be defined. If a method is not defined,
@@ -78,7 +83,8 @@ class ScrapyprojectDownloaderMiddleware:
         # - or return a Request object
         # - or raise IgnoreRequest: process_exception() methods of
         #   installed downloader middleware will be called
-        return None
+        user_agent = random.choice(USER_AGENT_CHOICES)
+        request.headers['User-Agent'] = user_agent
 
     def process_response(self, request, response, spider):
         # Called with the response returned from the downloader.
