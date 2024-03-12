@@ -3,6 +3,7 @@ from scrapy import Request
 from scrapy import signals
 from scrapy.crawler import CrawlerProcess
 from scrapy.signalmanager import dispatcher
+from ScrapyProject.ScrapyProject.items import MubawabItem
 
 class MubawabVillaSpider(scrapy.Spider):
     name = "mubawab_villa"
@@ -21,19 +22,15 @@ class MubawabVillaSpider(scrapy.Spider):
                 yield Request(url=offer_url, callback=self.parse_offer)
 
     def parse_offer(self, response):
-        name = response.xpath('/html/body/section/div[2]/div/div[1]/h1//text()').extract_first()
-        price = response.xpath('/html/body/section/div[2]/div/div[1]/div[1]/div[1]/h3//text()').extract_first()
-        secteurEtVille = response.xpath('/html/body/section/div[2]/div/div[1]/h3//text()').extract_first()
-        surface = response.xpath('/html/body/section/div[2]/div/div[1]/div[2]/span[1]//text()').extract_first()
+        item = MubawabItem()
+        item['url_offer'] = response.url
+        item['name'] = response.xpath('/html/body/section/div[2]/div/div[1]/h1//text()').extract_first()
+        item['price'] = response.xpath('/html/body/section/div[2]/div/div[1]/div[1]/div[1]/h3//text()').extract_first()
+        item['secteur_et_ville'] = response.xpath('/html/body/section/div[2]/div/div[1]/h3//text()').extract_first()
+        item['surface'] = response.xpath('/html/body/section/div[2]/div/div[1]/div[2]/span[1]//text()').extract_first()
+        item['type'] = 'Ville'
 
-        yield {
-            'name': name,
-            'url_offer': response.url,
-            'price': price,
-            'type': 'Villa',
-            'secteur_et_ville': secteurEtVille,
-            'surface': surface
-        }
+        yield item
 
 def result():
     urls = []

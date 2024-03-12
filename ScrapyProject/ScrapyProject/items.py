@@ -6,7 +6,20 @@
 import scrapy
 
 
-class ScrapyprojectItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+class AvitoItem(scrapy.Item):
+    name = scrapy.Field()
+    url_offer = scrapy.Field()
+    price = scrapy.Field()
+    ville = scrapy.Field()
+    type = scrapy.Field()
+    secteur = scrapy.Field()
+    surface_habitable = scrapy.Field()
+
+
+class MubawabItem(scrapy.Item):
+    name = scrapy.Field()
+    url_offer = scrapy.Field()
+    price = scrapy.Field()
+    type = scrapy.Field()
+    secteur_et_ville = scrapy.Field()
+    surface = scrapy.Field()

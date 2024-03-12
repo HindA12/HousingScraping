@@ -5,6 +5,7 @@ from scrapy import Request
 from scrapy import signals
 from scrapy.crawler import CrawlerProcess
 from scrapy.signalmanager import dispatcher
+from ScrapyProject.ScrapyProject.items import AvitoItem
 
 
 class AvitoSpider(scrapy.Spider):
@@ -13,7 +14,7 @@ class AvitoSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = []
-        for i in range(0, 2):
+        for i in range(0, 300):
             urls.append(f"https://www.avito.ma/fr/maroc/appartements-%C3%A0_louer?o={i+1}")
         for url in urls:
             yield scrapy.Request(url, callback=self.parse)
@@ -27,11 +28,13 @@ class AvitoSpider(scrapy.Spider):
                 yield scrapy.Request(offer_url, callback=self.parse_offer, meta={'ville': ville})
 
     def parse_offer(self, response):
-        name = response.xpath('//*[@id="__next"]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div['
-                              '1]/div[1]/h1/text()').extract_first()
-        price = response.xpath('//*[@id="__next"]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]/div['
-                               '1]/div[2]/p/text()').extract_first()
-        ville = response.meta.get('ville')
+        item = AvitoItem()
+        item['name'] = response.xpath('//*[@id="__next"]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div['
+                                      '1]/div[1]/div[1]/h1/text()').extract_first()
+        item['price'] = response.xpath('//*[@id="__next"]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div['
+                                       '1]/div[1]/div[2]/p/text()').extract_first()
+        item['ville'] = response.meta.get('ville')
+        item['url_offer'] = response.url
 
         for selector in response.xpath('/html/body/div[1]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div['
                                        '3]/div[2]/ol'):
@@ -45,15 +48,12 @@ class AvitoSpider(scrapy.Spider):
                     value = selector.xpath(f'li[{i+1}]/span[2]//text()').extract_first()
                     keys.append(key)
                     values.append(value)
-            dict1 = dict(zip(keys, values))
+            Dict = dict(zip(keys, values))
+            item['type'] = Dict.get('type')
+            item['secteur'] = Dict.get('secteur')
+            item['surface_habitable'] = Dict.get('surface_habitable')
 
-        yield {
-            "name": name,
-            "url_offer": response.url,
-            "price": price,
-            "ville": ville,
-            **dict1
-        }
+        yield item
 
 
 def result():
