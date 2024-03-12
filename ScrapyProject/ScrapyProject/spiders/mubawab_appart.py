@@ -10,7 +10,7 @@ class MubawabAppartSpider(scrapy.Spider):
     allowed_domains = ["mubawab.ma"]
 
     def start_requests(self):
-        for i in range(0, 10):
+        for i in range(0, 300):
             url = f"https://www.mubawab.ma/fr/sc/appartements-a-louer:p:{i+1}"
             yield scrapy.Request(url=url, callback=self.parse)
 

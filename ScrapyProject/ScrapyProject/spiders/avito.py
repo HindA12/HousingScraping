@@ -13,8 +13,8 @@ class AvitoSpider(scrapy.Spider):
 
     def start_requests(self):
         urls = []
-        for i in range(0, 100):
-            urls.append(f"https://www.avito.ma/fr/maroc/appartements-%C3%A0_louer?o={i}")
+        for i in range(0, 2):
+            urls.append(f"https://www.avito.ma/fr/maroc/appartements-%C3%A0_louer?o={i+1}")
         for url in urls:
             yield scrapy.Request(url, callback=self.parse)
 
