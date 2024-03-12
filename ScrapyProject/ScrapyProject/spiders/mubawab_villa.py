@@ -30,9 +30,9 @@ class MubawabVillaSpider(scrapy.Spider):
             'name': name,
             'url_offer': response.url,
             'price': price,
-            'Type': 'Villa',
-            'Secteur et Ville': secteurEtVille,
-            'Surface': surface
+            'type': 'Villa',
+            'secteur_et_ville': secteurEtVille,
+            'surface': surface
         }
 
 def result():

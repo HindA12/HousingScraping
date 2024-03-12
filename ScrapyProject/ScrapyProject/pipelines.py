@@ -6,6 +6,8 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.pipelines.items import ItemsPipeline
+from scrapy.exceptions import DropItem
 
 
 class ScrapyprojectPipeline:

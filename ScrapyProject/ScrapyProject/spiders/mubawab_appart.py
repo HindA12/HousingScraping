@@ -31,9 +31,9 @@ class MubawabAppartSpider(scrapy.Spider):
             'name': name,
             'url_offer': response.url,
             'price': price,
-            'Type': 'Appartement',
-            'Secteur et Ville': secteurEtVille,
-            'Surface': surface
+            'type': 'Appartement',
+            'secteur_et_ville': secteurEtVille,
+            'surface': surface
         }
 
 def result():

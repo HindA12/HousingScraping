@@ -35,7 +35,7 @@ class AvitoSpider(scrapy.Spider):
 
         for selector in response.xpath('/html/body/div[1]/div/main/div/div[3]/div[1]/div[2]/div[1]/div[1]/div[2]/div['
                                        '3]/div[2]/ol'):
-            champs = ['Type', 'Secteur', 'Surface habitable']
+            champs = ['type', 'secteur', 'surface_habitable']
             keys = []
             values = []
             num_elements = len(selector.xpath('.//*'))
