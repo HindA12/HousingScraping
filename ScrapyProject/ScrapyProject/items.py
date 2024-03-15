@@ -22,4 +22,6 @@ class MubawabItem(scrapy.Item):
     price = scrapy.Field()
     type = scrapy.Field()
     secteur_et_ville = scrapy.Field()
+    secteur = scrapy.Field()
+    ville = scrapy.Field()
     surface = scrapy.Field()

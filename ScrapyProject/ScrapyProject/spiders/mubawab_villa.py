@@ -8,6 +8,9 @@ from ScrapyProject.ScrapyProject.items import MubawabItem
 class MubawabVillaSpider(scrapy.Spider):
     name = "mubawab_villa"
     allowed_domains = ["mubawab.ma"]
+    custom_settings = {
+        'ITEM_PIPELINES': {'ScrapyProject.ScrapyProject.pipelines.MubawabPipeline': 100}
+    }
 
     def start_requests(self):
         for i in range(0, 8):

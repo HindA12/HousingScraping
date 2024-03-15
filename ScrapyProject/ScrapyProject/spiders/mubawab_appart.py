@@ -9,9 +9,12 @@ from ScrapyProject.ScrapyProject.items import MubawabItem
 class MubawabAppartSpider(scrapy.Spider):
     name = "mubawab_appart"
     allowed_domains = ["mubawab.ma"]
+    custom_settings = {
+        'ITEM_PIPELINES': {'ScrapyProject.ScrapyProject.pipelines.MubawabPipeline': 100}
+    }
 
     def start_requests(self):
-        for i in range(0, 300):
+        for i in range(0, 2):
             url = f"https://www.mubawab.ma/fr/sc/appartements-a-louer:p:{i+1}"
             yield scrapy.Request(url=url, callback=self.parse)
 
